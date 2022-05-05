@@ -33,8 +33,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Check Swagger for API info: http://localhost:5120/swagger/index.html
-app.Run("http://localhost:5120");
+// Not relevant, but check curiosity on why/how specifying the port doesn't work
+app.Run(); // Adding a run URL seems to break something for API testing, not sure why: app.Run("http://localhost:5120");
 
 
 //##• Code should be written in C#.
@@ -44,8 +44,8 @@ app.Run("http://localhost:5120");
 //indefinitely with status of send attempt.
 //• If email fails to send it should either be retried until success or a max of 3 times whichever
 //comes first, and can be sent in succession or over a period of time.
-//??• Please store all credentials in an appsettings instead of hardcoded.
+//##• Please store all credentials in an appsettings instead of hardcoded.
 //##• At minimum that method/dll should be called from a console application.
-//• Extra Credit if attached to an API that can be called from Postman.
+//##• Extra Credit if attached to an API that can be called from Postman.
 //• EXTRA Credit if a front end (wpf/asp.net web application/etc...) calls the API to send the email.
 //• In any scenario you should be able to take in an input of a recipient email to send a test email.

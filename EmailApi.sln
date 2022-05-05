@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "Console\Console.
 		{74E9E0E5-D7D8-4302-9129-AFAF51EC81FF} = {74E9E0E5-D7D8-4302-9129-AFAF51EC81FF}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{9E0943E7-9DF5-446B-BF78-03F8EB273E92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{9E0943E7-9DF5-446B-BF78-03F8EB273E92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
