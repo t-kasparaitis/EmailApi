@@ -1,0 +1,47 @@
+﻿@page
+@model ContactUsModel
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Contact Us</h1>
+</div>
+
+<div class="text-center">
+<p> If you have a question about our product, or simply want to leave us some feedback please leave us a message.</p>
+<p> One of our customer support representatives will reach out within 48 hours.</p>
+</div>
+@*The error below seems to happen with Chrome & Visual Studio (latest edition). It happens on tab merges in specific.
+    The number of tabs being merged is not relevant, it can happen with 1 such as opening an external link, or with many more.
+    At first I thought I had introduced a bug, but this was replicated on a 2nd web app project where I slowly merged changes.
+    Then I tested on Microsoft's default starter web app project and a tab merge killed the client host yet again. I tested
+    the main project with no other tabs, the client ran without issues for 30+ minutes. The same project was crashing in <30 sec
+    everytime before. The exit error is below:
+
+    "has exited with code 4294967295 (0xffffffff)"
+
+    The link below shows that it was a bug with an older version of VS, but it still happens. In the future maybe testing with
+    VS Code or something else may be a better idea. 
+    https://developercommunity.visualstudio.com/t/vs2022-unit-test-debugging-in-wsl-not-working/1547009*@
+<div class="card">
+    <h3 class="card-header">Questions & Feedback</h3>
+    <div class="card-body">
+        <form>
+          <div class="form-group">
+            <label for="sender">Email address</label>
+            <input type="email" class="form-control" id="sender" placeholder="user@example.com">
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" class="form-control" id="subject" placeholder="Overnight Shipping">
+          </div>
+          <div class="form-group">
+            <label for="body">Message</label>
+            <input type="text" class="form-control" id="body" placeholder="Do you provide faster shipping options, such as overnight shipping?">
+          </div>
+          <br />
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
