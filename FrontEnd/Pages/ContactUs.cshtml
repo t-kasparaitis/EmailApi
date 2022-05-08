@@ -27,18 +27,18 @@
 <div class="card">
     <h3 class="card-header">Questions & Feedback</h3>
     <div class="card-body">
-        <form>
+        <form method="post" action="http://localhost:5000/Email/send">
           <div class="form-group">
             <label for="sender">Email address</label>
-            <input type="email" class="form-control" id="sender" placeholder="user@example.com">
+            <input type="email" name="Sender" class="form-control" id="sender" placeholder="user@example.com">
           </div>
           <div class="form-group">
             <label for="subject">Subject</label>
-            <input type="text" class="form-control" id="subject" placeholder="Overnight Shipping">
+            <input type="text" name="Subject" class="form-control" id="subject" placeholder="Overnight Shipping">
           </div>
           <div class="form-group">
             <label for="body">Message</label>
-            <input type="text" class="form-control" id="body" placeholder="Do you provide faster shipping options, such as overnight shipping?">
+            <input type="text" name="Body" class="form-control" id="body" placeholder="Do you provide faster shipping options, such as overnight shipping?">
           </div>
           <br />
           <button type="submit" class="btn btn-primary">Submit</button>

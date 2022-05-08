@@ -47,5 +47,5 @@ app.Run(); // Adding a run URL seems to break something for API testing, not sur
 //##• Please store all credentials in an appsettings instead of hardcoded.
 //##• At minimum that method/dll should be called from a console application.
 //##• Extra Credit if attached to an API that can be called from Postman.
-//• EXTRA Credit if a front end (wpf/asp.net web application/etc...) calls the API to send the email.
-//• In any scenario you should be able to take in an input of a recipient email to send a test email.
+//##• EXTRA Credit if a front end (wpf/asp.net web application/etc...) calls the API to send the email.
+//##• In any scenario you should be able to take in an input of a recipient email to send a test email.

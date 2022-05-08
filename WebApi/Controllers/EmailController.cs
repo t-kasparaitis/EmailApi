@@ -26,33 +26,38 @@ namespace WebApi.Controllers
         // POST /email/send
         [HttpPost("send")]
         // IActionResult explained: https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
-        public ActionResult<EmailDetails> PostEmail(EmailDetails model)
+        // Model Binding explained: https://docs.microsoft.com/en-us/aspnet/core/mvc/models/model-binding?view=aspnetcore-6.0
+        // public ActionResult<EmailDetails> PostEmail([FromForm] EmailDetails model)
+        public IActionResult Post([FromForm] EmailDetails model)
         {
+            // This is clearly wrong, but the premise is that the front end info is passed to a setter for the model
+            // after which the model's info is passed  to the SendEmail method?
+            //EmailDetails details = new EmailDetails();
+            //details.Sender = model.Sender;
             // Create an instance of the EmailService class from DLL and invoke SendEmail method:
             // TODO: think about resource cleanup, either using w/ IDisposable or try-finally block
             EmailService emailService = new EmailService();
             emailService.SendEmail(
-                // TODO: pull values as user input from front-end:
-                "tkasparaitis@spoofed.com", // sender
-                "leah@company.com", // recipient
-                "Purchase Order #102832", // e-mail subject
-                @"Hi Leah,
+                model.Sender,
+                _emailOptions.Recipient, // all e-mails go to the same inbox, pulled from settings
+                model.Subject,
+                model.Body,
+//                // TODO: pull values as user input from front-end:
+//                "tkasparaitis@spoofed.com", // sender
+//                "leah@company.com", // recipient
+//                "Purchase Order #102832", // e-mail subject
+//                @"Hi Leah,
 
-Thank you for the purchase of our product.
+//Thank you for the purchase of our product.
 
-If you have any questions or concerns please feel free to reach out to our customer support at support@spoofed.com.
+//If you have any questions or concerns please feel free to reach out to our customer support at support@spoofed.com.
 
-Kind Regards,
-Team", // e-mail body
-       // TODO: pull values from appsettings rather than hardcoding:
+//Kind Regards,
+//Team", // e-mail body
                 _emailOptions.SmtpHost,
                 _emailOptions.SmtpPort,
                 _emailOptions.SmtpUser,
                 _emailOptions.SmtpPass);
-                //"smtp.mailtrap.io", // smtpHost url from mailtrap.io
-                //2525, //smtpPort number - only a few ports but they vary by provider
-                //"eb21bf2238088a", // smtp user name/login
-                //"39ccdc35823c5f"); // smtp password
             return Ok(new {message = "E-mail sent"}); // change to appropriate response later, account for errors
         }
     }

@@ -14,7 +14,14 @@ namespace FrontEnd.Pages
 
         public void OnGet()
         {
+        }
 
+
+        // This should fix the task running in the background so user can move around?
+        // If not can use ajax to send the request
+        public IActionResult OnPostSubmit()
+        {
+            return Page();
         }
     }
 }
