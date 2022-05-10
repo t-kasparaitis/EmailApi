@@ -3,7 +3,7 @@ using WebApi.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// builder.Services.AddRazorPages(); - check out Razor Pages ? Thymeleaf equivalent view engine
+builder.Services.AddRazorPages(); // add view engine
 
 // read appsettings.json using options https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0
 builder.Services.Configure<EmailOptions>(
@@ -28,13 +28,13 @@ if (app.Environment.IsDevelopment())
 
 // global Cross-Origin Resource Sharing policy:
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-app.UseHttpsRedirection();
-app.UseAuthorization();
+//app.UseHttpsRedirection();
+//app.UseAuthorization();
 
 app.MapControllers();
 
 // Not relevant, but check curiosity on why/how specifying the port doesn't work
-app.Run(); // Adding a run URL seems to break something for API testing, not sure why: app.Run("http://localhost:5120");
+app.Run(); // Adding a run URL seems to break something for API testing, not sure why: app.Run("http://localhost:xxxx");
 
 
 //##• Code should be written in C#.

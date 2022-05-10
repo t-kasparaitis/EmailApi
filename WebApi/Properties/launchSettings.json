@@ -1,4 +1,4 @@
-﻿// TODO: figure out this config, causes weird API behavior
+﻿// Commented out original config for demo purposes:
 
 //{
 //  "$schema": "https://json.schemastore.org/launchsettings.json",

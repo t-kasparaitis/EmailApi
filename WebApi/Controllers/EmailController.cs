@@ -1,7 +1,7 @@
 ﻿using Email;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options; // this is where the fields & setting name is for pulling from appsettings.json
 using WebApi.Models;
 using WebApi.Options;
 
@@ -9,11 +9,11 @@ using WebApi.Options;
 namespace WebApi.Controllers
 {
 
-    // GET /email
     [ApiController]
     [Route("[controller]")]
     public class EmailController : ControllerBase
     {
+        // using options we are able to pull from appsettings.json instead of hardcoding
         private readonly EmailOptions _emailOptions;
 
         public EmailController(IOptions<EmailOptions> emailOptions)
@@ -21,39 +21,22 @@ namespace WebApi.Controllers
             _emailOptions = emailOptions.Value;
         }
 
-        // CRUD operations on EF SQLite db that will have our e-mail core & time stamp/fail-pass info
-
-        // POST /email/send
+        // POST /email
         [HttpPost("send")]
-        // IActionResult explained: https://docs.microsoft.com/en-us/aspnet/core/web-api/action-return-types?view=aspnetcore-6.0
-        // Model Binding explained: https://docs.microsoft.com/en-us/aspnet/core/mvc/models/model-binding?view=aspnetcore-6.0
-        // public ActionResult<EmailDetails> PostEmail([FromForm] EmailDetails model)
+        // data passed from front-end form must match EmailDetails model, or else it is rejected
         public IActionResult Post([FromForm] EmailDetails model)
         {
-            // This is clearly wrong, but the premise is that the front end info is passed to a setter for the model
-            // after which the model's info is passed  to the SendEmail method?
-            //EmailDetails details = new EmailDetails();
-            //details.Sender = model.Sender;
-            // Create an instance of the EmailService class from DLL and invoke SendEmail method:
+            //• Email sender, recipient, subject, and body (not attachments), and date must be logged/stored
+            //indefinitely with status of send attempt.
+            //• If email fails to send it should either be retried until success or a max of 3 times whichever
+            //comes first, and can be sent in succession or over a period of time.
             // TODO: think about resource cleanup, either using w/ IDisposable or try-finally block
             EmailService emailService = new EmailService();
             emailService.SendEmail(
                 model.Sender,
-                _emailOptions.Recipient, // all e-mails go to the same inbox, pulled from settings
+                _emailOptions.Recipient,
                 model.Subject,
                 model.Body,
-//                // TODO: pull values as user input from front-end:
-//                "tkasparaitis@spoofed.com", // sender
-//                "leah@company.com", // recipient
-//                "Purchase Order #102832", // e-mail subject
-//                @"Hi Leah,
-
-//Thank you for the purchase of our product.
-
-//If you have any questions or concerns please feel free to reach out to our customer support at support@spoofed.com.
-
-//Kind Regards,
-//Team", // e-mail body
                 _emailOptions.SmtpHost,
                 _emailOptions.SmtpPort,
                 _emailOptions.SmtpUser,
