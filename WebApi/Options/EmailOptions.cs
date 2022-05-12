@@ -3,7 +3,7 @@
     public class EmailOptions
     {
         public const string DefaultEmail = "DefaultEmail";
-        public string Recipient { get; set; } = String.Empty;
+        public string Sender { get; set; } = String.Empty;
         public string SmtpHost { get; set; } = String.Empty;
         public int SmtpPort { get; set; }
         public string SmtpUser { get; set; } = String.Empty;

@@ -18,7 +18,7 @@ namespace FrontEnd.Pages
         {
         }
 
-        public string Sender { get; set; } = String.Empty;
+        public string Recipient { get; set; } = String.Empty;
         public string Subject { get; set; } = String.Empty;
         public string Body { get; set; } = String.Empty;
 
@@ -30,13 +30,13 @@ namespace FrontEnd.Pages
             // create a dictionary (unique key-value pairs) for our user e-mail input
             var content = new Dictionary<string, string>
             {
-                {"sender", Request.Form[nameof(Sender)]},
+                {"recipient", Request.Form[nameof(Recipient)]},
                 {"subject", Request.Form[nameof(Subject)]},
                 {"body", Request.Form[nameof(Body)]}
             };
 
             // use Singleton-created http client to make 3rd party API call + convert dictionary of user input
-            await _client.PostAsync("http://localhost:5000/Email/send", new FormUrlEncodedContent(content));
+            await _client.PostAsync("http://localhost:5000/Email", new FormUrlEncodedContent(content));
 
             // our API will log to the DB, however if the API is down info won't be captured - for such logging additional logic would be required
 

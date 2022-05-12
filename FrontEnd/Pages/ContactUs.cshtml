@@ -32,15 +32,15 @@
         <form method="post" id="email-form">
           <div class="form-group">
             <label for="sender">Email address</label>
-            <input type="email" asp-for="Sender" name="Sender" class="form-control" id="sender" placeholder="user@example.com">
+            <input type="email" asp-for="Recipient" name="Recipient" class="form-control" id="recipient" placeholder="user@example.com">
           </div>
           <div class="form-group">
             <label for="subject">Subject</label>
-            <input type="text" asp-for="Subject" name="Subject" class="form-control" id="subject" placeholder="Overnight Shipping">
+            <input type="text" asp-for="Subject" name="Subject" class="form-control" id="subject" placeholder="Thank you for your purchase">
           </div>
           <div class="form-group">
             <label for="body">Message</label>
-            <input type="text" asp-for="Body" name="Body" class="form-control" id="body" placeholder="Do you provide faster shipping options, such as overnight shipping?">
+            <input type="text" asp-for="Body" name="Body" class="form-control" id="body" placeholder="We hope you enjoy your brand new ... Kind Regards, the ... Team">
           </div>
           <br />
           <button button type="submit" id="submit" class="btn btn-primary">Submit</button>

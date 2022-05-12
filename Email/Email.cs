@@ -10,37 +10,40 @@ namespace Email
     {
         // could also specify the parameter to be MimeMessage rather than all these strings
         // instead creating the Message inside the calling app
-        void SendEmail(string sender, string recipient, string subject, string body,
+        Task<string> SendEmail(string sender, string recipient, string subject, string body,
             string smtpHost, int smtpPort, string smtpUser, string smtpPass);
     }
 
     public class EmailService : IEmailService
     {
 
-        public void SendEmail(string sender, string recipient, string subject, string body, 
+        public async Task<string> SendEmail(string sender, string recipient, string subject, string body, 
             string smtpHost, int smtpPort, string smtpUser, string smtpPass)
         {
-            // create message using MailKit 
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse(sender));
-            email.To.Add(MailboxAddress.Parse(recipient));
-            email.Subject = subject;
+            // create message using MailKit & SmtpClient for message transfer
+            using (var email = new MimeMessage())
+            using (var smtp = new SmtpClient())
 
-            email.Body = new TextPart(TextFormat.Plain) { Text = body };
-            // alternative for html email:
-            // email.Body = new TextPart(TextFormat.Html) { Text = body }; 
+            // Note: resource cleanup is managed by using keyword which is equivalent to try-catch-finally!
+            // Stackoverflow seems to say that containing the logic in a block is necessary to account for unexpected exits
+            {
+                email.From.Add(MailboxAddress.Parse(sender));
+                email.To.Add(MailboxAddress.Parse(recipient));
+                email.Subject = subject;
 
-            // send email
-            // https://docs.microsoft.com/en-us/dotnet/api/system.net.mail.smtpclient?view=net-6.0
-            // ^^ handling transmission success/fail
-            using var smtp = new SmtpClient();
-            smtp.Connect(smtpHost, smtpPort, SecureSocketOptions.StartTls);
-            smtp.Authenticate(smtpUser, smtpPass);
-            smtp.Send(email);
-            
-            // implement log + if it does not succeed implement recursive email:
-            // if sucess or attempts > 2, then exit, else run Send() with the same parameters
-            smtp.Disconnect(true);
+                email.Body = new TextPart(TextFormat.Plain) { Text = body };
+                // email.Body = new TextPart(TextFormat.Html) { Text = body }; // alternative for html e-mail
+
+                smtp.Connect(smtpHost, smtpPort, SecureSocketOptions.StartTls);
+                smtp.Authenticate(smtpUser, smtpPass);
+
+                // catch & log exceptions if there's an error, or return default status
+                string status = "sending successful";
+                try { await smtp.SendAsync(email); } 
+                catch (Exception e) { status = e.Message; }
+                smtp.Disconnect(true);
+                return status;
+            }
         }
     }
 }
