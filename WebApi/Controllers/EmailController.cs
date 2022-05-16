@@ -1,5 +1,4 @@
 ﻿using Email;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options; // this is where the fields & setting name is for pulling from appsettings.json
 using WebApi.Data;
@@ -27,9 +26,6 @@ namespace WebApi.Controllers
         // data passed from front-end form must match EmailDetails model, or else it is rejected
         public async Task<IActionResult> Post([FromForm] EmailDetails model)
         {
-            //• Email sender, recipient, subject, and body (not attachments), and date must be logged/stored
-            //indefinitely with status of send attempt.
-
             // create new email & pass in parameters from model & appsettings:
             EmailService emailService = new EmailService();
             EmailPayload emailPayload = new EmailPayload
@@ -47,27 +43,36 @@ namespace WebApi.Controllers
             // if attempts reaches 4 or we get "sending successful" we stop trying to transmit the email
             int attempts = 0;
             string status = String.Empty;
-            while (attempts < 4 && status.Equals("sending successful") != true)
+            while (attempts < 3 && status.Equals("sending successful") != true)
             {
                 attempts++;
-                status = await emailService.SendEmail(emailPayload);
-
-                // log message info, GUID(PK) is auto-generated:
-                using (var context = new SqliteDbContext()) 
+                // try-catch-finally to make sure all exceptions are logged:
+                try
                 {
-                    var attempt = new AttemptEntity()
-                    {
-                        TimeStamp = DateTime.UtcNow,
-                        Status = status,
-                        Sender = _emailOptions.Sender,
-                        Recipient = model.Recipient,
-                        Subject= model.Subject,
-                        Body= model.Body
-                    };
-                    context.Attempts.Add(attempt);
-                    await context.SaveChangesAsync();
+                    status = await emailService.SendEmail(emailPayload);
                 }
-                
+                catch (Exception e)
+                {
+                    status = e.Message;
+                }
+                finally
+                {
+                    // log message info, GUID(PK) is auto-generated:
+                    using (var context = new SqliteDbContext())
+                    {
+                        var attempt = new AttemptEntity()
+                        {
+                            TimeStamp = DateTime.UtcNow,
+                            Status = status + " attempt # " + attempts.ToString(),
+                            Sender = _emailOptions.Sender,
+                            Recipient = model.Recipient,
+                            Subject = model.Subject,
+                            Body = model.Body
+                        };
+                        context.Attempts.Add(attempt);
+                        await context.SaveChangesAsync();
+                    }
+                }
             }
 
             // Note: if the amount of time to receive a response matters, we would need a callback function.
