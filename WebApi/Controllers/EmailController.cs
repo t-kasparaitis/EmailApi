@@ -28,22 +28,44 @@ namespace WebApi.Controllers
         {
             //• Email sender, recipient, subject, and body (not attachments), and date must be logged/stored
             //indefinitely with status of send attempt.
-            //• If email fails to send it should either be retried until success or a max of 3 times whichever
-            //comes first, and can be sent in succession or over a period of time.
 
             // create new email & pass in parameters from model & appsettings:
             EmailService emailService = new EmailService();
-            await emailService.SendEmail(
-                _emailOptions.Sender,
-                model.Recipient,
-                model.Subject,
-                model.Body,
-                _emailOptions.SmtpHost,
-                _emailOptions.SmtpPort,
-                _emailOptions.SmtpUser,
-                _emailOptions.SmtpPass);
-            
-            return Ok(new {message = "Send e-mail request received"}); 
+            EmailPayload emailPayload = new EmailPayload
+            {
+                Sender = _emailOptions.Sender,
+                Recipient = model.Recipient,
+                Subject = model.Subject,
+                Body = model.Body,
+                SmtpHost = _emailOptions.SmtpHost,
+                SmtpPort = _emailOptions.SmtpPort,
+                SmtpUser = _emailOptions.SmtpUser,
+                SmtpPass = _emailOptions.SmtpPass
+            };
+
+            // if attempts reaches 4 or we get "sending successful" we stop trying to transmit the email
+            int attempts = 0;
+            string status = String.Empty;
+            while (attempts < 4 && status.Equals("sending successful") != true)
+            {
+                attempts++;
+                status = await emailService.SendEmail(emailPayload);
+
+                // log sender; recipient; subject; body; date(datetime? utcoffset?), status
+
+            }
+
+            // Note: if the amount of time to receive a response matters, we would need a callback function.
+            // However, per HTTP responses 202 is for accepting a request and 200 is for it succeeding.
+            // For failure we return 400 as request errors should be client-based if our service is up.
+            if (status.Equals("sending successful")) 
+            {
+                return Ok(new { message = "E-mail sent to server" });
+            }
+            else 
+            {
+                return BadRequest(status);
+            }
         }
     }
 }

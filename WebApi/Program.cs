@@ -1,9 +1,12 @@
+using WebApi.Data;
 using WebApi.Options;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages(); // add view engine
+builder.Services.AddDbContext<SqliteDbContext>();
 
 // read appsettings.json using options https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0
 builder.Services.Configure<EmailOptions>(
@@ -42,7 +45,7 @@ app.Run(); // Adding a run URL seems to break something for API testing, not sur
 //entry points.
 //• Email sender, recipient, subject, and body (not attachments), and date must be logged/stored
 //indefinitely with status of send attempt.
-//• If email fails to send it should either be retried until success or a max of 3 times whichever
+//##• If email fails to send it should either be retried until success or a max of 3 times whichever
 //comes first, and can be sent in succession or over a period of time.
 //##• Please store all credentials in an appsettings instead of hardcoded.
 //##• At minimum that method/dll should be called from a console application.
