@@ -6,7 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages(); // add view engine
+
+// Database creation 2 commands (you would run these if DB was not created/up-to-date to build off the models):
+// dotnet ef migrations add InitialCreate // InitialCreate is just a descriptive name, could be any string
+// dotnet ef database update
 builder.Services.AddDbContext<SqliteDbContext>();
+// recommended for viewing your DB info: https://sqlitebrowser.org/
 
 // read appsettings.json using options https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0
 builder.Services.Configure<EmailOptions>(

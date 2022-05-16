@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options; // this is where the fields & setting name is for pulling from appsettings.json
+using WebApi.Data;
 using WebApi.Models;
 using WebApi.Options;
 
@@ -51,8 +52,22 @@ namespace WebApi.Controllers
                 attempts++;
                 status = await emailService.SendEmail(emailPayload);
 
-                // log sender; recipient; subject; body; date(datetime? utcoffset?), status
-
+                // log message info, GUID(PK) is auto-generated:
+                using (var context = new SqliteDbContext()) 
+                {
+                    var attempt = new AttemptEntity()
+                    {
+                        TimeStamp = DateTime.UtcNow,
+                        Status = status,
+                        Sender = _emailOptions.Sender,
+                        Recipient = model.Recipient,
+                        Subject= model.Subject,
+                        Body= model.Body
+                    };
+                    context.Attempts.Add(attempt);
+                    await context.SaveChangesAsync();
+                }
+                
             }
 
             // Note: if the amount of time to receive a response matters, we would need a callback function.
