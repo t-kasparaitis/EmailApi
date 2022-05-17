@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace FrontEnd.Pages
 {
@@ -18,8 +18,14 @@ namespace FrontEnd.Pages
         {
         }
 
+        [Required]
+        [EmailAddress]
         public string Recipient { get; set; } = String.Empty;
+        [Required]
+        [StringLength(255, MinimumLength = 2)]
         public string Subject { get; set; } = String.Empty;
+        [Required]
+        [StringLength(10000, MinimumLength = 2)] // String Max Length here might be a consideration for abuse/data storage
         public string Body { get; set; } = String.Empty;
 
         // note with 1 server hosting front-end and 2nd server hosting front-end, this is in essence a 3rd party API call
