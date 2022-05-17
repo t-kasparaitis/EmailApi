@@ -1,16 +1,15 @@
 ﻿@page
-@model ContactUsModel
+@model ContactCustomerModel
 @{
-    ViewData["Title"] = "Contact Us";
+    ViewData["Title"] = "Contact Customer";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Contact Us</h1>
+    <h1 class="display-4">Contact Customer</h1>
 </div>
 
 <div class="text-center">
-<p> If you have a question about our product, or simply want to leave us some feedback please leave us a message.</p>
-<p> One of our customer support representatives will reach out within 48 hours.</p>
+<p> This form is intended for quickly sending tailored emails to customers from a shared company inbox. </p>
 </div>
 @*The error below seems to happen with Chrome & Visual Studio (latest edition). It happens on tab merges in specific.
     The number of tabs being merged is not relevant, it can happen with 1 such as opening an external link, or with many more.
@@ -40,7 +39,7 @@
           </div>
           <div class="form-group">
             <label for="body">Message</label>
-            <input type="text" asp-for="Body" name="Body" class="form-control" id="body" placeholder="We hope you enjoy your brand new ... Kind Regards, the ... Team">
+            <textarea input type="text" asp-for="Body" name="Body" rows="8" class="form-control" id="body" placeholder="We hope you enjoy your brand new ... Kind Regards, the ... Team"></textarea>
           </div>
           <br />
           <button button type="submit" id="submit" class="btn btn-primary">Submit</button>

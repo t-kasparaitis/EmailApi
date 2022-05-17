@@ -4,11 +4,11 @@ using Newtonsoft.Json.Linq;
 
 namespace FrontEnd.Pages
 {
-    public class ContactUsModel : PageModel
+    public class ContactCustomerModel : PageModel
     {
         private HttpClient _client;
-        private readonly ILogger<ContactUsModel> _logger;
-        public ContactUsModel(HttpClient client, ILogger<ContactUsModel> logger)
+        private readonly ILogger<ContactCustomerModel> _logger;
+        public ContactCustomerModel(HttpClient client, ILogger<ContactCustomerModel> logger)
         {
             _client = client;
             _logger = logger;
