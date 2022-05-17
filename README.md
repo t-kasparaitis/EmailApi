@@ -42,4 +42,4 @@ Register with Mailtrap.io or similar service (https://mailtrap.io/register/signu
   4. Swagger (back-end API documentation/testing) will start on https://localhost:5001/swagger/index.html.
      - The back-end is listening for API calls on http://localhost:5000/.
   5. Note: Closing either one of the start-up browser windows will stop the program.
-     - There is a bug with either Chrome or Visual Studio Code, where debugging exits (program appears to crash) if tabs are merged. The pages have to stay as single pages or else the program crashes/exits unexpectedly. This documented issue is similar: https://developercommunity.visualstudio.com/t/vs2022-unit-test-debugging-in-wsl-not-working/1547009.
+     - There is a bug with either Chrome or Visual Studio Code, where debugging exits (program appears to crash) if tabs are merged. The pages have to stay as single pages or else the program crashes/exits unexpectedly.
