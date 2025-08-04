@@ -37,6 +37,8 @@ namespace FrontEnd.Pages
                 // use Singleton-created http client to make 3rd party API call + convert dictionary of user input
                 // PostAsync will run in the background, but we don't wait for results which allows return Page() to give the illusion of immediate response!
                 _client.PostAsync("http://localhost:5000/Email", new FormUrlEncodedContent(content));
+
+                return RedirectToPage();
             }
 
             return Page();
